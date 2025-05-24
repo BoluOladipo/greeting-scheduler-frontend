@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Celebrants</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="slide-in-left">
+  <header class="header slide-down" style="background-color: #f9a825;">
+  <div class="logo-container">
+    <img src="assets/images/logo2.jpg" alt="Logo" class="logo" style="height: 60px; width: 100px;" />
+    
+  </div>
+  <nav class="nav">
+    <a href="index.html">Dashboard |</a>
+    <a href="templates.html">Templates |</a>
+    <a href="celebrants.html">Celebrants |</a>
+  </nav>
+</header>
+
+
+  <main class="container">
+    <h1>Manage Celebrants</h1>
+
+    <!-- Single Add Celebrant Form -->
+    <form class="card" id="celebrantForm">
+      <label>Full Name</label>
+      <input type="text" id="name" required />
+
+      <label>Email</label>
+      <input type="email" id="email" required />
+
+      <label>Occasion</label>
+      <select id="occasion">
+        <option value="Birthday">Birthday</option>
+        <option value="Anniversary">Anniversary</option>
+      </select>
+
+      <label>Date</label>
+      <input type="date" id="date" required />
+
+      <button type="submit">Add Celebrant</button>
+    </form>
+
+    <!-- Bulk Upload Form for any supported file -->
+    <form class="card" id="bulkUploadForm" enctype="multipart/form-data">
+      <h3>Upload Celebrants (CSV, XLSX, DOCX, PDF)</h3>
+      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,.docx,.pdf" required />
+      <button type="submit">Upload File</button>
+      <p>Accepted formats: CSV, XLSX, DOCX, PDF</p>
+    </form>
+
+    <div class="card">
+      <h3>Celebrants List</h3>
+      <ul id="celebrantList"></ul>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('celebrantForm');
+    const bulkForm = document.getElementById('bulkUploadForm');
+    const list = document.getElementById('celebrantList');
+
+    // Single celebrant add (unchanged)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const newCelebrant = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        occasion: document.getElementById('occasion').value,
+        date: document.getElementById('date').value,
+      };
+
+      try {
+        const res = await fetch('https://greeting-scheduler-backend.onrender.com/api/celebrants', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newCelebrant)
+        });
+
+        if (!res.ok) throw new Error('Failed to add celebrant');
+        await res.json();
+
+        form.reset();
+        fetchCelebrants();
+      } catch (err) {
+        console.error(err);
+        alert('Error adding celebrant');
+      }
+    });
+
+    // Bulk upload ANY file (CSV, XLSX, DOCX, PDF)
+    bulkForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert('Please select a file to upload');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('https://greeting-scheduler-backend.onrender.com/api/celebrants/bulk-upload-file', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          alert('Upload failed: ' + (errorData.error || 'Unknown error'));
+          return;
+        }
+
+        alert('Bulk upload successful!');
+        bulkForm.reset();
+        fetchCelebrants();
+      } catch (err) {
+        console.error(err);
+        alert('Error during bulk upload');
+      }
+    });
+
+    // Fetch & display celebrants list WITH delete buttons
+    async function fetchCelebrants() {
+      try {
+        const res = await fetch('https://greeting-scheduler-backend.onrender.com/api/celebrants');
+        const celebrants = await res.json();
+
+        list.innerHTML = '';
+        celebrants.forEach(c => {
+          const li = document.createElement('li');
+          li.textContent = `${c.name} - ${c.email} (${c.occasion} on ${new Date(c.date).toLocaleDateString()})`;
+
+          // Delete button for each celebrant
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.style.marginLeft = '10px';
+          deleteBtn.onclick = () => deleteCelebrant(c._id);
+
+          li.appendChild(deleteBtn);
+          list.appendChild(li);
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Failed to load celebrants');
+      }
+    }
+
+    // Delete celebrant function
+    async function deleteCelebrant(id) {
+      if (!confirm('Are you sure you want to delete this celebrant?')) return;
+
+      try {
+        const res = await fetch(`https://greeting-scheduler-backend.onrender.com/api/celebrants/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          alert('Delete failed: ' + (errorData.error || 'Unknown error'));
+          return;
+        }
+
+        alert('Celebrant deleted successfully!');
+        fetchCelebrants(); // Refresh list
+      } catch (err) {
+        console.error(err);
+        alert('Error deleting celebrant');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', fetchCelebrants);
+  </script>
+</body>
+</html>

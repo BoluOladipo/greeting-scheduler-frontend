@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sent Messages</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="fade-in-bottom"> 
+
+  <!-- Navigation Header -->
+  <header class="header">
+    <h1>CFM Greeting Scheduler</h1>
+    <nav>
+      <a href="index.html">Dashboard |</a>
+      <a href="templates.html">Templates |</a>
+      <a href="celebrants.html">Celebrants |</a>
+      <a href="sent.html">Sent Messages</a>
+    </nav>
+  </header>
+
+  <!-- Main Content Section -->
+  <main class="container">
+    <h1>Sent Messages</h1>
+    <div class="card">
+      <h2>Recently Sent</h2>
+      <ul id="sentList">
+        <!-- Messages will be loaded here -->
+      </ul>
+    </div>
+  </main>
+
+  <script>
+    async function loadSentMessages() {
+      try {
+        const res = await fetch('http://localhost:5000/api/sent-messages');
+        const messages = await res.json();
+
+        const list = document.getElementById('sentList');
+        list.innerHTML = ''; // Clear existing items
+
+        if (!messages.length) {
+          const li = document.createElement('li');
+          li.textContent = 'No messages sent yet.';
+          list.appendChild(li);
+          return;
+        }
+
+        messages.forEach(msg => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${new Date(msg.dateSent).toLocaleDateString()}:</strong> ${msg.occasion} message sent to <em>${msg.recipientName}</em> (${msg.recipientEmail})`;
+          list.appendChild(li);
+        });
+      } catch (err) {
+        console.error('Failed to load sent messages', err);
+        const list = document.getElementById('sentList');
+        list.innerHTML = '<li>Error loading sent messages.</li>';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadSentMessages);
+  </script>
+</body>
+</html>

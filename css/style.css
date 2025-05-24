@@ -1,0 +1,367 @@
+/*Global Styles*/
+
+:root {
+  --primary: #f9a825;
+  --accent: #f9a825;
+  --bg: #f4f6f8;
+  --white: #ffffff;
+  --gray: #6b7280;
+}
+
+/* Universal Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(
+    to bottom,
+    white 0%,
+    white 100%,
+    #ffd699 75%,  /* light orange */
+    #ff8c00 50%  /* deep orange */
+  );
+  color: var(--primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Container */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  padding-bottom: 5rem; 
+  flex: 1;
+}
+
+
+/*Navigation Header*/
+.nav{
+  background: var(--primary) ;
+  color: var(--primary);
+}
+
+
+
+
+/* Header */
+.header {
+  background: var(--primary);
+  padding: 1rem 2rem;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Header Navigation Links */
+.header nav a {
+  color: var(--white);
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+
+/*Create Template Page*/
+
+
+/* Card Styling */
+.card {
+  background: var(--white);
+  padding: 2rem;
+  margin-top: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.8s ease;
+}
+
+/* Form Labels */
+form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Form Inputs, Selects, Textareas */
+form input,
+form select,
+form textarea {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Form Button */
+form button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  background: var(--accent);
+  border: none;
+  color: var(--white);
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Form Button Hover */
+form button:hover {
+  background: #f57f17;
+}
+
+/* Sent List */
+#sentList li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+.MT{
+    padding-left: -500px;
+}
+
+
+/*Home Page Sections*/
+
+
+/* Hero Section */
+.hero {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+/* Hero Heading */
+.hero h2 {
+  font-size: 2.5rem;
+  color: #004080;
+}
+
+/* Hero Paragraph */
+.hero p {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+/* Buttons */
+.btn {
+  background-color: #ff7b00;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+/* Button Hover */
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+/* Individual Stat Card */
+.stat-card {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+}
+
+/* Stat Card Heading */
+.stat-card h3 {
+  color: #004080;
+  font-size: 2rem;
+}
+
+/* Features Section */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+/* Individual Feature */
+.feature {
+  max-width: 280px;
+  padding: 1.5rem;
+  background: #f2f6ff;
+  border-radius: 15px;
+  transition: transform 0.4s ease;
+}
+
+/* Feature Image */
+.feature img {
+  width: 50px;
+  margin-bottom: 1rem;
+}
+
+/* Feature Hover */
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+/* Call to Action Section */
+/* Call to Action Section */
+.cta {
+  background-color: var(--white);
+  color: var(--gray);
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+
+/* CTA Button */
+.cta .btn {
+  background: #ff7b00;
+  margin-top: 2rem;
+}
+
+/* CTA Button Wrapper */
+.cta-btn-wrapper {
+  margin-top: 3rem;
+}
+
+
+/*Footer*/
+
+
+/* Footer */
+.footer {
+  color: var(--white);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  margin-top: auto;
+}
+
+
+/*Animations*/
+
+
+/* Fade In Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Animation Utility */
+.fade-in-bottom {
+  animation: fadeIn 1s ease forwards;
+}
+
+/* Zoom In Utility */
+.zoom-in {
+  animation: zoomIn 0.6s ease;
+}
+
+/* Zoom In Animation Keyframes */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Slide In Left Utility */
+.slide-in-left {
+  animation: slideLeft 0.8s ease;
+}
+
+/* Slide Left Animation Keyframes */
+@keyframes slideLeft {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide Fade In Utility */
+.slide-fade-in {
+  animation: fadeIn 1s ease;
+}
+
+
+/*Responsive Styles */
+
+
+/* Tablet and Below */
+@media (max-width: 768px) {
+  /* Header on Mobile */
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Header Nav Links on Mobile */
+  .header nav a {
+    margin: 0.5rem;
+  }
+
+  /* Hero Heading on Mobile */
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  /* Stats & Features Column Layout */
+  .stats,
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Stat & Feature Card Full Width */
+  .stat-card,
+  .feature {
+    width: 100%;
+    max-width: 90%;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 600px) {
+  /* Header on Small Mobile */
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Header Nav Links on Small Mobile */
+  .header nav a {
+    margin: 0.5rem;
+  }
+}
